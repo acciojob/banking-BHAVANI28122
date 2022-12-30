@@ -1,5 +1,5 @@
 package com.driver;
-
+import java.lang.*;
 public class BankAccount {
 
     private String name;
@@ -64,16 +64,16 @@ public class BankAccount {
 
     public void deposit(double amount) {
         //add amount to balance
-        this.balance = getBalance() +amount;
+        this.balance = this.balance + amount;
 
     }
 
     public void withdraw(double amount) throws Exception {
         // Remember to throw "Insufficient Balance" exception, if the remaining amount would be less than minimum balance
-        if(balance < minBalance){
-            throw new ArithmeticException("Insufficient Balance");
+        if(this.balance < minBalance){
+            throw new Exception("Insufficient Balance");
         }
-        this.balance= balance - amount;
+        this.balance = balance - amount;
 
     }
 
