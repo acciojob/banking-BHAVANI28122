@@ -110,7 +110,7 @@ public class CurrentAccount extends BankAccount{
         // If the characters of the license Id can be rearranged to create any valid license Id
         // If it is not possible, throw "Valid License can not be generated" Exception
 
-        if(check(getTradeLicenseId())== false){
+        if(check(getTradeLicenseId())== true){
 
             String res = rearrangeString(tradeLicenseId);
             if (res == "")
