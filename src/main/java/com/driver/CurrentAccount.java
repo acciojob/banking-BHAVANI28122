@@ -1,6 +1,7 @@
 package com.driver;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 
 public class CurrentAccount extends BankAccount{
     String tradeLicenseId; //consists of Uppercase English characters only
@@ -21,85 +22,31 @@ public class CurrentAccount extends BankAccount{
             throw new Exception("Insufficient Balance");
         }
     }
-     boolean check(String id)
-    {
+    public String swap(String a,int i,int j){
+        char temp;
+        char[] ch= a.toCharArray();
+        temp = ch[i];
+        ch[i]=ch[j];
+        ch[j]=temp;
+        return String.valueOf(ch);
 
-        int n = id.length();
-        char ch[] = id.toCharArray();
-        Arrays.sort(ch);
-        for (int i = 1; i < n; i++) {
-
-            if (ch[i] - ch[i - 1] != 1)
-                return false;
-        }
-
-        return true;
     }
 
 
-    static char getMaxCountChar(int[] count)
-    {
-        int max = 0;
-        char ch = 0;
-        for (int i = 0; i < 26; i++) {
-            if (count[i] > max) {
-                max = count[i];
-                ch = (char)((int)'a' + i);
+   private void permute (String str,int l,int r,ArrayList<String>ans){
+
+        if(l == r){
+            ans.add(str);
+        }
+        else{
+            for(int i =1;i<=r;i++){
+                str = swap(str,l,i);
+                permute(str,l+1,r,ans);
+                str=swap(str,l,i);
             }
         }
-        return ch;
-    }
+   }
 
-    static String rearrangeString(String S)
-    {
-
-        int N = S.length();
-        if (N == 0)
-            return "";
-
-        int[] count = new int[26];
-        for (int i = 0; i < 26; i++) {
-            count[i] = 0;
-        }
-        for (char ch : S.toCharArray()) {
-            count[(int)ch - (int)'a']++;
-        }
-
-        char ch_max = getMaxCountChar(count);
-        int maxCount = count[(int)ch_max - (int)'a'];
-
-
-        if (maxCount > (N + 1) / 2)
-            return "";
-
-        String res = "";
-        for (int i = 0; i < N; i++) {
-            res += ' ';
-        }
-
-        int ind = 0;
-
-        while (maxCount > 0) {
-            res = res.substring(0, ind) + ch_max
-                    + res.substring(ind + 1);
-            ind = ind + 2;
-            maxCount--;
-        }
-        count[(int)ch_max - (int)'a'] = 0;
-
-
-        for (int i = 0; i < 26; i++) {
-            while (count[i] > 0) {
-                ind = (ind >= N) ? 1 : ind;
-                res = res.substring(0, ind)
-                        + (char)((int)'a' + i)
-                        + res.substring(ind + 1);
-                ind += 2;
-                count[i]--;
-            }
-        }
-        return res;
-    }
 
     // Driver's Code
 
@@ -110,12 +57,27 @@ public class CurrentAccount extends BankAccount{
         // If the characters of the license Id can be rearranged to create any valid license Id
         // If it is not possible, throw "Valid License can not be generated" Exception
 
-        if(check(getTradeLicenseId())== true){
-
-            String res = rearrangeString(tradeLicenseId);
-            if (res == "")
-                throw new Exception("Valid License can not be generated");
-        }
+       ArrayList<String> ans = new ArrayList<>();
+       permute(getTradeLicenseId(),0,tradeLicenseId.length()-1,ans);
+       boolean flag = false;
+       boolean check = false;
+       for(String str : ans){
+           flag =false;
+           for(int i=0;i<str.length()-1;i++){
+               if(str.charAt(i)== str.charAt(i+1)){
+                   flag =true;
+               }
+           }
+           if(flag == false){
+               check =true;
+           }
+           if(flag == false){
+               check =true;
+           }
+       }
+       if(check == false){
+           throw new Exception("Valid License can not be generated");
+       }
     }
 
 }
